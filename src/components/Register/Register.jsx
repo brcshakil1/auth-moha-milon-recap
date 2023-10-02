@@ -3,9 +3,11 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../../context/AuthProvider";
 import toast from "react-hot-toast";
 import { updateProfile } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [eye, setEye] = useState(false);
+  const navigate = useNavigate();
 
   const { createUser } = useContext(AuthContext);
 
@@ -20,6 +22,7 @@ const Register = () => {
       .then((result) => {
         if (result) {
           toast.success("Successfully Registered!");
+          navigate("/login");
         }
         updateProfile(result.user, { displayName: name, photoURL: photoUrl })
           .then()

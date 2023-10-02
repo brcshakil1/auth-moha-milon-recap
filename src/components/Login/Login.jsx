@@ -2,10 +2,14 @@ import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../../context/AuthProvider";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [eye, setEye] = useState(false);
-  const { signIn } = useContext(AuthContext);
+  const { signIn, googleSignIn } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -17,7 +21,16 @@ const Login = () => {
         if (result) {
           toast.success("Successfully logged in!");
         }
-        console.log(result.user);
+        navigate("/");
+      })
+      .catch((err) => toast.error(err.message));
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then(() => {
+        toast.success("Successfully logged in!");
+        navigate("/");
       })
       .catch((err) => toast.error(err.message));
   };
@@ -76,6 +89,9 @@ const Login = () => {
               <button className="btn btn-primary">Register</button>
             </div>
           </form>
+          <button onClick={handleGoogleSignIn} className="m-5 ">
+            <FcGoogle />
+          </button>
         </div>
       </div>
     </div>
